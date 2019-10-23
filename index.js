@@ -7,7 +7,7 @@ let channel;
 
 const queue = [];
 
-const timeBetween = 0.25 * 60;
+const timeBetween = config.time * 60;
 client.on("message", message => {
     const args = message.content.slice(config.prefix.length).trim().split(/ +/g);
     const command = args.shift().toLowerCase();

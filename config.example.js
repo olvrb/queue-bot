@@ -1,4 +1,5 @@
 module.exports = {
     token: "",
-    prefix: "!"
+    prefix: "!",
+    time: 15
 }
