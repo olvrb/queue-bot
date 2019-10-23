@@ -13,7 +13,7 @@ client.on("message", message => {
     const command = args.shift().toLowerCase();
 
     if (command === "join") {
-        if (queue.includes(message.author.id)) return message.reply("already in queue...");
+        if (queue.find(x => x.user === message.author.id)) return message.reply("already in queue...");
         let startTime = now() + timeBetween;
         if (queue.length > 0) startTime = queue[queue.length - 1].startTime + timeBetween;
         queue.push({ user: message.author.id, startTime /* Add 10 minutes */ });
