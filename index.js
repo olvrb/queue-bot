@@ -16,12 +16,12 @@ client.on("message", message => {
         if (queue.find(x => x.user === message.author.id)) return message.reply("already in queue...");
         let startTime = now() + timeBetween;
         if (queue.length > 0) startTime = queue[queue.length - 1].startTime + timeBetween;
-        queue.push({ user: message.author.id, startTime /* Add 10 minutes */ });
+        queue.push({ user: message.author.id, startTime });
         message.reply("added to queue.");
     }
-    if (command === "queue") {
-        message.channel.send(queue);
-    }
+    // if (command === "queue") {
+    //     message.channel.send(queue.toString());
+    // }
     if (command === "timeleft") {
         const out = timeLeft(message.author.id);
         if (out === -1) return message.reply("not in queue.");
@@ -50,7 +50,13 @@ client.on("ready", () => {
 async function updateMessage() {
     const messageChannel = client.channels.get("635787016105099264");
     const message = await messageChannel.fetchMessage("635787460001136649");
-    message.edit(`${queue.map((x) => `<@${x.user}>: ${timeLeft(x.user)}`).join("\n")}`);
+
+    message.edit(generateMessage());
+}
+
+function generateMessage() {
+    var tzoffset = (new Date()).getTimezoneOffset() * 120000; //offset in milliseconds
+    return `${queue.map((x) => `<@${x.user}>: ${timeLeft(x.user)} minuter kvar tills det är din tur, kl ${new Date(x.startTime * 1e3 - tzoffset).toISOString().slice(-13, -5)} `).join("\n")}`;
 }
 
 
